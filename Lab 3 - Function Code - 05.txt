@@ -1,0 +1,347 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+
+[TestClass]
+    public class UnitTestConvertWindSpeedData : FunctionTestHelper.FunctionTest
+    {
+        [TestMethod]
+        public void CanConvertLowWindSpeed()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 8.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 8.0,
+                Beaufort = 5,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort3()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 4.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 4.0,
+                Beaufort = 3,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort4()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 7.5,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 7.5,
+                Beaufort = 4,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort6()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 12.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 12.0,
+                Beaufort = 6,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort7()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 15.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 15.0,
+                Beaufort = 7,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort8()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 19.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 19.0,
+                Beaufort = 8,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort9()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 23.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 23.0,
+                Beaufort = 9,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort10()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 28.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 28.0,
+                Beaufort = 10,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertWindSpeedToBeaufort11()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 30.0,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 30.0,
+                Beaufort = 11,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertHighWindSpeed()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = 75.8,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = 75.8,
+                Beaufort = 12,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanConvertNegativeWindSpeed()
+        {
+            //Arrange
+            var windSpeedRequest = new WindSpeedData
+            {
+                WindSpeed = -10,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (OkObjectResult)result;
+
+            //Assert
+            var resultResponse = new WindSpeedData
+            {
+                WindSpeed = -10,
+                Beaufort = 0,
+                Location = "Amsterdam"
+            };
+            var resultBody = JsonConvert.SerializeObject(resultResponse, Formatting.Indented);
+            Assert.AreEqual(resultBody, resultObject.Value);
+        }
+
+        [TestMethod]
+        public void CanNotConvertWindSpeed()
+        {
+            //Arrange
+            var windSpeedRequest =
+                "{\r\n  \"Location\": \"Amsterdam\",\r\n  \"WindSpeed\": ,\r\n  \"Beaufort\": 0\r\n}";
+
+            //Act
+            var query = new Dictionary<String, StringValues>();
+            var body = JsonConvert.SerializeObject(windSpeedRequest, Formatting.Indented);
+
+            var result = ConvertWindSpeedToBeaufort.Run(HttpRequestSetup(query, body), log);
+            var resultObject = (BadRequestObjectResult)result;
+
+            //Assert
+            Assert.AreEqual("Please pass the correct request body!", resultObject.Value);
+        }
+    }

@@ -1,0 +1,65 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Host;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+public static class ConvertWindSpeedToBeaufort
+    {
+        [FunctionName("ConvertWindSpeedToBeaufort")]
+        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, TraceWriter log)
+        {
+            var json = new StreamReader(req.Body).ReadToEnd();
+            WindSpeedData data = null;
+            var content = string.Empty;
+
+            try
+            {
+                data = JsonConvert.DeserializeObject<WindSpeedData>(json);
+
+                //Initalize beaufort scale
+                var beaufort = 0;
+
+                var cases = new Dictionary<Func<double, bool>, Action>
+                {
+                    { x => x < 0.2 , () => beaufort = 0} ,
+                    { x => x < 1.5 , () => beaufort = 1} ,
+                    { x => x < 3.3 , () => beaufort = 2} ,
+                    { x => x < 5.4 , () => beaufort = 3} ,
+                    { x => x < 7.9 , () => beaufort = 4} ,
+                    { x => x < 10.7, () => beaufort = 5} ,
+                    { x => x < 13.8, () => beaufort = 6} ,
+                    { x => x < 17.1, () => beaufort = 7} ,
+                    { x => x < 20.7, () => beaufort = 8} ,
+                    { x => x < 24.4, () => beaufort = 9} ,
+                    { x => x < 28.4, () => beaufort = 10} ,
+                    { x => x < 32.6, () => beaufort = 11} ,
+                    { x => x > 32.7, () => beaufort = 12}
+                };
+
+                cases.First(kvp => kvp.Key(data.WindSpeed)).Value();
+
+                data.Beaufort = beaufort;
+
+                content = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+                log.Info($"Response messagebody : " + content);
+            }
+            catch (Exception e)
+            {
+                data = null;
+                log.Info($"Function call error message : " + e.Message);
+            }
+                
+            log.Info($"Function call with Request messagebody : " + json);
+
+            return data != null
+                ? (ActionResult)new OkObjectResult(content)
+                : new BadRequestObjectResult("Please pass the correct request body!");
+        }
+    }

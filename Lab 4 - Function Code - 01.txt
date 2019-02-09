@@ -1,0 +1,79 @@
+#r "Microsoft.Azure.EventGrid"
+#r "Newtonsoft.Json"
+#r "System.Web"
+
+using System;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
+using Microsoft.Azure.EventGrid.Models;
+
+public static void Run(EventGridEvent eventGridEvent, ICollector<string> outputSbMsg, ILogger log)
+{
+    log.LogInformation(eventGridEvent.Data.ToString());
+
+    //intiliaze
+    string imageInfo = string.Empty;
+    
+    //get content
+    string jsonContent = eventGridEvent.Data.ToString();
+
+    var objEvent = JsonConvert.DeserializeObject<Event>(jsonContent);
+
+    //read image
+    var webClient = new WebClient();
+    byte[] image = webClient.DownloadData(objEvent.url);
+
+    //analyze image
+    imageInfo = AnalyzeImage(image);
+
+    log.LogInformation(imageInfo);
+
+    //output to service bus queue
+    outputSbMsg.Add(imageInfo);
+}
+
+private static string AnalyzeImage(byte[] imageLocation) 
+  {
+    var client = new HttpClient();
+    var queryString = HttpUtility.ParseQueryString(string.Empty);
+ 
+    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "your key");
+ 
+    queryString["maxCandidates"] = "1";
+    var uri = " https://westeurope.api.cognitive.microsoft.com/vision/v1.0/describe?" + queryString;
+    HttpResponseMessage response;
+ 
+    using (var content = new ByteArrayContent(imageLocation)) 
+    {
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+        response = client.PostAsync(uri, content).Result;
+ 
+        string imageInfo = response.Content.ReadAsStringAsync().Result;
+ 
+        return imageInfo;
+    }
+}
+
+    public class StorageDiagnostics
+    {
+        public string batchId { get; set; }
+    }
+
+    public class Event
+    {
+        public string api { get; set; }
+        public string clientRequestId { get; set; }
+        public string requestId { get; set; }
+        public string eTag { get; set; }
+        public string contentType { get; set; }
+        public int contentLength { get; set; }
+        public string blobType { get; set; }
+        public string url { get; set; }
+        public string sequencer { get; set; }
+        public StorageDiagnostics storageDiagnostics { get; set; }
+    }
